@@ -27,3 +27,6 @@ require('lazy').setup({
 
 -- Middle layer modules
 require("core.autocommands")
+
+-- Abundance layer modules
+require("custom.latex").setup()
