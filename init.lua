@@ -11,13 +11,15 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+require("vim._core.ui2").enable({})
 vim.g.python3_host_prog = '/home/thecedarprince/Programs/Miniconda3/envs/neovim/bin/python'
 
 -- Set up paths BEFORE lazy so it can find all plugin specs
 vim.o.runtimepath = vim.o.runtimepath .. ',' .. vim.fn.stdpath("config")
 vim.o.runtimepath = vim.o.runtimepath .. ',' .. vim.fn.stdpath("config") .. "/lua/core"
-package.path = package.path .. ';' .. vim.fn.stdpath("config") .. '/lua/?.lua'
-package.path = package.path .. ';' .. vim.fn.stdpath("config") .. '/?.lua'
+
+local lazy_path = vim.fn.stdpath("data") .. "/lazy"
+package.path = package.path .. ";" .. lazy_path .. "/nvim-treesitter/lua/?.lua"
 
 require('lazy').setup({
     { import = "plugins" },
@@ -25,8 +27,7 @@ require('lazy').setup({
     { import = "core.lua.core.lua.plugins" },
 })
 
--- Middle layer modules
-require("core.autocommands")
-
 -- Abundance layer modules
 require("custom.latex").setup()
+
+vim.env.WEZTERM_SHELL_SKIP_ALL = "1"
