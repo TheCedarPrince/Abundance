@@ -1,29 +1,16 @@
--- ~/.config/nvim/lua/plugins/warp.lua
--- warp.nvim — Jump to file paths, URLs, and markdown links visible in any buffer.
--- Especially useful in terminal buffers: press \w, type the hint label, land there.
--- Prefix hint with S or V to open in a split instead.
+-- ~/.config/nvim/lua/plugins/warp.nvim
+-- warp.nvim — automatic jump hints on visible file paths, URLs, markdown links.
+-- No manual keybind needed: warp detects paths in the buffer and overlays
+-- hint labels automatically. Type the label to jump/open.
+-- Configured here with no custom keymap to avoid conflicts with \w (winmove).
 
 return {
   "nolleh/warp.nvim",
-  keys = {
-    { "<leader>w", desc = "Warp — jump to path/URL" },
-  },
+  commit = "d91533e9fa768f6d6fbd31fc27bf8b1236c4c712",
+  event = "VeryLazy",
   config = function()
     require("warp").setup({
-      -- Disable the built-in default so we control the binding ourselves
-      default_keymap = false,
+      default_keymap = false, -- no keybind; warp overlays hints passively
     })
-
-    vim.keymap.set("n", "<leader>w", function()
-      require("warp").warp()
-    end, { desc = "Warp — jump to path/URL/link" })
-
-    -- WhichKey group registration
-    local ok, wk = pcall(require, "which-key")
-    if ok then
-      wk.add({
-        { "<leader>w", desc = "Warp — jump to path/URL" },
-      })
-    end
   end,
 }

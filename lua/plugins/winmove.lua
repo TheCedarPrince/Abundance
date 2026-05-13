@@ -1,81 +1,73 @@
--- ~/.config/nvim/lua/plugins/winmove.lua
--- winmove.nvim — Move, swap, and resize windows.
--- Modes are driven by Hydra (see hydra-winmove.lua).
--- This file just configures winmove itself; keymaps to *enter* modes live in hydra-winmove.lua.
+-- ~/.config/nvim/lua/plugins/winshift.lua
+-- sindrets/winshift.nvim — rearrange windows with ease.
+-- Replaces the winmove + hydra setup entirely.
+--
+-- ── How to use ───────────────────────────────────────────────────────────────
+--
+--   \wm        enter Win-Move mode for current window
+--              (then use hjkl to move, HJKL to move to far edge, q/<Esc> to exit)
+--   \wx        swap current window with another (letter picker appears)
+--
+--   One-shot directional moves (no modal entry needed):
+--   \wh  \wj  \wk  \wl        move window one step in direction
+--   \wH  \wJ  \wK  \wL        move window to far edge in direction
 
 return {
-  "MisanthropicBit/winmove.nvim",
-  lazy = true, -- loaded on demand by Hydra bindings
+  "sindrets/winshift.nvim",
+  commit = "37468ed6f385dfb50402368669766504c0e15583",
+  cmd  = "WinShift",
+  keys = {
+    { "<leader>wm", "<cmd>WinShift<CR>",           desc = "Win-Move mode" },
+    { "<leader>wx", "<cmd>WinShift swap<CR>",       desc = "Swap windows" },
+    { "<leader>wh", "<cmd>WinShift left<CR>",       desc = "Move window left" },
+    { "<leader>wj", "<cmd>WinShift down<CR>",       desc = "Move window down" },
+    { "<leader>wk", "<cmd>WinShift up<CR>",         desc = "Move window up" },
+    { "<leader>wl", "<cmd>WinShift right<CR>",      desc = "Move window right" },
+    { "<leader>wH", "<cmd>WinShift far_left<CR>",   desc = "Move window far left" },
+    { "<leader>wJ", "<cmd>WinShift far_down<CR>",   desc = "Move window far down" },
+    { "<leader>wK", "<cmd>WinShift far_up<CR>",     desc = "Move window far up" },
+    { "<leader>wL", "<cmd>WinShift far_right<CR>",  desc = "Move window far right" },
+  },
 
-  config = function()
-    local winmove  = require("winmove")
-    local at_edge  = require("winmove.at_edge")
-
-    winmove.configure({
-      keymaps = {
-        help       = "?",    -- show help popup inside the mode
-        help_close = "q",
-        quit       = "q",
-        toggle_mode = "<Tab>", -- cycle move → swap → resize
+  opts = {
+    highlight_moving_win = true,
+    focused_hl_group     = "Visual",
+    moving_win_options   = {
+      wrap         = false,
+      cursorline   = false,
+      cursorcolumn = false,
+      colorcolumn  = "",
+    },
+    keymaps = {
+      disable_defaults = false,
+      win_move_mode    = {
+        ["h"] = "left",  ["j"] = "down",  ["k"] = "up",  ["l"] = "right",
+        ["H"] = "far_left", ["J"] = "far_down", ["K"] = "far_up", ["L"] = "far_right",
+        ["<left>"] = "left", ["<down>"] = "down", ["<up>"] = "up", ["<right>"] = "right",
+        ["<S-left>"] = "far_left", ["<S-down>"] = "far_down",
+        ["<S-up>"]   = "far_up",   ["<S-right>"] = "far_right",
       },
+    },
+  },
 
-      modes = {
-        move = {
-          highlight = "Visual",
-          at_edge = {
-            horizontal = at_edge.AtEdge.Wrap,    -- wrap around editor edges
-            vertical   = at_edge.AtEdge.Wrap,
-          },
-          keymaps = {
-            left      = "h",
-            down      = "j",
-            up        = "k",
-            right     = "l",
-            far_left  = "H",  -- move as far left as possible
-            far_down  = "J",
-            far_up    = "K",
-            far_right = "L",
-            split_left  = "sh",
-            split_down  = "sj",
-            split_up    = "sk",
-            split_right = "sl",
-          },
-        },
+  config = function(_, opts)
+    require("winshift").setup(opts)
 
-        swap = {
-          highlight = "Substitute",
-          at_edge = {
-            horizontal = at_edge.AtEdge.None,
-            vertical   = at_edge.AtEdge.None,
-          },
-          keymaps = {
-            left  = "h",
-            down  = "j",
-            up    = "k",
-            right = "l",
-          },
-        },
-
-        resize = {
-          highlight = "Todo",
-          default_resize_count = 3,
-          keymaps = {
-            left  = "h",
-            down  = "j",
-            up    = "k",
-            right = "l",
-            large_left  = "H",
-            large_down  = "J",
-            large_up    = "K",
-            large_right = "L",
-            -- bottom-right anchor variants
-            left_botright  = "<C-h>",
-            down_botright  = "<C-j>",
-            up_botright    = "<C-k>",
-            right_botright = "<C-l>",
-          },
-        },
-      },
-    })
+    local ok, wk = pcall(require, "which-key")
+    if ok then
+      wk.add({
+        { "<leader>w",  group = "Window" },
+        { "<leader>wm", desc  = "Win-Move mode (hjkl, q to exit)" },
+        { "<leader>wx", desc  = "Swap windows" },
+        { "<leader>wh", desc  = "Move left" },
+        { "<leader>wj", desc  = "Move down" },
+        { "<leader>wk", desc  = "Move up" },
+        { "<leader>wl", desc  = "Move right" },
+        { "<leader>wH", desc  = "Move far left" },
+        { "<leader>wJ", desc  = "Move far down" },
+        { "<leader>wK", desc  = "Move far up" },
+        { "<leader>wL", desc  = "Move far right" },
+      })
+    end
   end,
 }
