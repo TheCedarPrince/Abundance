@@ -11,6 +11,7 @@
 
 return {
   "HakonHarnes/img-clip.nvim",
+  commit = "b6ddfb97b5600d99afe3452d707444afda658aca",
   event = "BufEnter",
   keys = {
     { "<leader>ip", "<cmd>PasteImage<CR>", desc = "Paste image from clipboard" },

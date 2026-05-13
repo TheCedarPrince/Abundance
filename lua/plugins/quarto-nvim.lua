@@ -1,5 +1,6 @@
 return {
   "quarto-dev/quarto-nvim",
+  commit = "17f1e5d664bc615478230dc0240666329efacf9b",
   dependencies = {
     "jmbuhr/otter.nvim",
     "nvim-treesitter/nvim-treesitter",

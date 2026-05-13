@@ -3,6 +3,7 @@
 
 return {
   "jpalardy/vim-slime",
+  commit = "2cfdc3b24e7ebaa64f5a1a04b00555600c622b79",
   init = function()
     -- Must be set in init (before plugin loads), not config
 

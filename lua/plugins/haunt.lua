@@ -6,6 +6,7 @@
 
 return {
   "TheNoeTrevino/haunt.nvim",
+  commit = "815141d7367c9d895e902db27e2d25d4652ad0fc",
   event = "VeryLazy",
   dependencies = { "ibhagwan/fzf-lua" },
 

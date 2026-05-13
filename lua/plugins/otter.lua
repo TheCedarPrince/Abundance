@@ -1,5 +1,6 @@
 return {
   "jmbuhr/otter.nvim",
+  commit = "a455e68a99d395889ab30a25ac3846a135e93c46",
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
   },
